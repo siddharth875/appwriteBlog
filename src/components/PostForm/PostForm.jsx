@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 
 function PostForm({post}) {
     const navigate = useNavigate()
-    const {register, handleSubmit, control, watch, setValue, getValues} = useForm({
+    const {register, handleSubmit, control, watch, setValue, getValues, reset} = useForm({
         defaultValues:{
             title : post?.title || "",
             slug : post?.$id || "",
@@ -25,7 +25,7 @@ function PostForm({post}) {
                 file_service.deleteFile(post.featuredImage)
             const dbPost = await post_service.updatePost(post.$id, {
                 ...data,
-                featuredImage : file ? file.$id : null
+                featuredImage : file ? file.$id : post.featuredImage
             })
             if(dbPost)
                 navigate(`/post/${dbPost.$id}`)
@@ -59,6 +59,15 @@ function PostForm({post}) {
         return () => subscription.unsubscribe();
     },[watch, setValue, slugTransform])
 
+    useEffect(()=>{
+        reset({
+            title : post?.title || "",
+            slug : post?.$id || "",
+            content : post?.content || "",
+            featuredImage : post?.featuredImage || "",
+            status : post?.status || "active",
+        })
+    },[post])
   return (
     <div>
         <form onSubmit={handleSubmit(submitHandler)} className='flex flex-wrap'>

@@ -9,12 +9,12 @@ function RTE({ name, control, defaultValue = '', label }) {
             <Controller
             name={name}
             control={control}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value} }) => (
                 <Editor
                     apiKey='pq94474cuuj83ietm71m1ok54vjt33dpyzmspjzcnjxtmibk'
                     initialValue={defaultValue}
+                    value={value}
                     init={{
-                        initialValue: defaultValue,
                         height: 500,
                         menubar: true,
                         plugins: [
